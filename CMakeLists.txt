@@ -1,15 +1,23 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(my-project
+project(ItmoShell
         VERSION 0.0.0
-        DESCRIPTION "My best project"
+	DESCRIPTION "itmoPageCache"
         LANGUAGES C CXX
 )
 
-set(CMAKE_C_STANDARD 23)
-set(CMAKE_C_STANDARD_REQUIRED True)
+option(MONOLITH_DEVELOPER "Enable ${PROJECT_NAME} developer mode" OFF)
+option(MONOLITH_BENCHMARK "Enable ${PROJECT_NAME} benchmark module" ON)
 
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+include(cmake/CompileOptions.cmake)
 
+add_subdirectory(cache_lib)
 add_subdirectory(app)
+
+if(MONOLITH_BENCHMARK)
+    find_package(GBenchmark REQUIRED)
+    add_subdirectory(benchmark)
+endif()
+
+
